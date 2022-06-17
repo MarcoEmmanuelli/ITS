@@ -1,0 +1,49 @@
+Esempi di formati di rappresentazione dei dati
+----------------------------------------------
+
+
+* CSV - Comma Separated Values
+
+member_no,lastname,firstname,middleinitial,photograph
+123,"De'Andre'","Alberto,Maria","",0x111100101
+113,"Rossi","Mario","A",0x12121222
+
+---
+
+* File a "Larghezza fissa"
+Lunghezza campi: 6+20+20+1+11
+
+   123De' Andre'          Alberto,Maria        0x111100101
+   113Rossi               Mario               A0x121212221
+
+---
+
+* XML
+
+<members>
+  <member member_no="123">
+    <lastname>De'Andre'</lastname>
+    <firstname>Alberto,Maria</firstname>
+    <middle_initial />
+    <photograph>0x111100101</photograph>
+  </member>
+  <member member_no="113">
+    <lastname>Rossi</lastname>
+    <firstname>Mario</firstname>
+    <middle_initial>A</middle_initial>
+    <photograph>0x121212221</photograph>
+  </member>
+</members>
+
+---
+
+* JSON
+
+{
+  "member_no": 123,
+  "lastname": "De' Andre'",
+  "firstname": "Alberto,Maria",
+  "middle_initial": "",
+  "photograph": 0x111100101
+}
+
