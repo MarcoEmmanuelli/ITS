@@ -1,0 +1,70 @@
+/* In questo esempio, si tenta di inserire una riga nella tabella adult e
+   una riga corrispondente nella tabella member.
+   Il secondo statement di INSERT fallisce perché il member 151 esiste già,
+   ma il primo statement di INSERT ha successo */
+
+INSERT INTO adult (member_no, street, city, state, zip, phone_no, expr_date)
+  VALUES (151, 'Corso De'' Gasperi 22', 'Torino', 'Italia', 10123, '334.1234567', DATEADD(yy, 1, GETDATE()))
+
+SET IDENTITY_INSERT member ON
+
+INSERT INTO member (member_no, lastname, firstname, middleinitial, photograph)
+  VALUES (151, 'Venditti', 'Alberto', null, null)
+
+SET IDENTITY_INSERT member OFF
+
+GO
+
+--
+-- Questo statement di DELETE può essere usato per ripristinare la situazione iniziale
+-- DELETE adult WHERE member_no=151
+
+----------
+
+/* Esempio simile al precedente, in cui i due statements però sono inclusi in una
+   transazione esplicita. Se il secondo statement fallisce viene effettuato un 
+   rollback esplicito, che va ad annullare l'inserimento fatto sulla tabella adult.
+   I due INSERT risultano quindi gestiti in modo atomico. */
+
+BEGIN TRANSACTION
+
+INSERT INTO adult (member_no, street, city, state, zip, phone_no, expr_date)
+  VALUES (151, 'Corso De'' Gasperi 22', 'Torino', 'Italia', 10123, '334.1234567', DATEADD(yy, 1, GETDATE()))
+
+SET IDENTITY_INSERT member ON
+
+INSERT INTO member (member_no, lastname, firstname, middleinitial, photograph)
+  VALUES (151, 'Venditti', 'Alberto', null, null)
+
+IF @@ERROR>0
+	ROLLBACK TRANSACTION
+ELSE
+	BEGIN
+	SET IDENTITY_INSERT member OFF
+	COMMIT TRANSACTION
+	END
+	
+----------
+
+/* Esempio simile al precedente, in cui però il rollback della transazione esplicita
+   viene gestito automaticamente tramite XACT_ABORT (senza più necessità di esplicito
+   controllo di errori: la transazione subisce ROLLBACK appena si presenta un errore). */
+
+SET XACT_ABORT ON
+
+BEGIN TRANSACTION
+
+INSERT INTO adult (member_no, street, city, state, zip, phone_no, expr_date)
+  VALUES (151, 'Corso De'' Gasperi 22', 'Torino', 'Italia', 10123, '334.1234567', DATEADD(yy, 1, GETDATE()))
+  
+SET IDENTITY_INSERT member ON
+
+INSERT INTO member (member_no, lastname, firstname, middleinitial, photograph)
+  VALUES (151, 'Venditti', 'Alberto', null, null)
+
+SET IDENTITY_INSERT member OFF
+
+COMMIT TRANSACTION
+
+----------
+

@@ -1,0 +1,37 @@
+/****** Object:  Table [dbo].[loanhist]    Script Date: 11/10/2016 15:48:03 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[loanhist](
+	[isbn] [char](13) NOT NULL,
+	[copy_no] [int] NOT NULL,
+	[title_no] [int] NOT NULL,
+	[member_no] [int] NOT NULL,
+	[out_date] [datetime] NOT NULL,
+	[due_date] [datetime] NULL,
+	[in_date] [datetime] NULL,
+	[fine_assessed] [datetime] NULL,
+	[fine_paid] [datetime] NULL,
+	[fine_waived] [datetime] NULL,
+	[remarks] [nvarchar](200) NULL,
+ CONSTRAINT [PK_loanhist] PRIMARY KEY CLUSTERED 
+(
+	[isbn] ASC,
+	[copy_no] ASC,
+	[member_no] ASC,
+	[out_date] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+

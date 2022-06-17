@@ -1,0 +1,45 @@
+-- Voglio inserire dei record in tabella loan...
+INSERT loan (isbn,copy_no,title_no,member_no,out_date,due_date)
+     VALUES ('..',.......,........,.........,'......','......')
+GO
+
+-- ...prendendo dei dati da tabella copy...
+SELECT TOP 10 isbn,copy_no,title_no FROM copy WHERE copy_no=1
+
+-- ...posso farmi generare dei comandi di INSERT
+SELECT TOP 10 'INSERT loan (isbn,copy_no,title_no,member_no,out_date,due_date) '
+ + 'VALUES (''' + isbn + ''',' + CONVERT(varchar,copy_no) + ',' 
+ + CONVERT(varchar, title_no) + ',1,' + '''2016-11-24'', ''2016-12-08'')'
+FROM copy WHERE copy_no=1
+
+-- Il resultset generato dalla precedente SELECT è un insieme di comandi
+-- di INSERT, che copiati e incollati in una nuova finestra del SQL Server Management Studio
+-- danno luogo a uno script che inserisce dati di esempio nella tabella loan.
+-- I dati inseriti hanno valori per isbn,copy_no,title_no che sono validi e coerenti
+-- col contenuto della tabella copy (da cui sono stati presi, infatti).
+
+-- Se mettiamo sempre lo stesso member_no nei nuovi loan, violiamo la regola del 
+-- massimo numero di libri in prestito simultaneamente alla stessa persona.
+-- Per far sì che questa regola sia rispettata, possiamo aggiungere alla tabella
+-- loan un trigger che su INSERT controlla che il nuovo loan inserito non sia
+-- il quinto per quel member_number. Se lo è, un ROLLBACK garantisce l'UNDO della INSERT
+-- che ha scatenato il trigger.
+CREATE TRIGGER CheckMaxLoansForSameMember
+   ON loan AFTER INSERT
+AS 
+BEGIN
+	-- This trigger manages the single row case only
+	DECLARE @MemberNo int
+	SELECT @MemberNo=member_no FROM inserted
+
+	DECLARE @LoanCount int
+	SELECT @LoanCount=COUNT(*) FROM loan WHERE member_no=@MemberNo
+	
+	IF @LoanCount>4
+		BEGIN
+		RAISERROR ('Max loans per member is 4.',5,0)
+		ROLLBACK TRANSACTION
+		END
+END
+
+

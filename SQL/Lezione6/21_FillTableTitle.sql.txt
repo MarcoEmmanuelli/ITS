@@ -1,0 +1,30 @@
+TRUNCATE TABLE title
+SET IDENTITY_INSERT title ON
+
+INSERT INTO title (title_no,title,author,synopsis) VALUES (1,'Il mondo è grande e alieno','Alegria Ciro',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (2,'Il piano infinito','Allende Isabel',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (3,'La casa degli spiriti','Allende Isabel','Esteban Trueba si innamora della bella ed eterea Rosa del Valle: egli decide dunque di lavorare duramente allo scopo di accumulare la ricchezza necessaria per prenderla in sposa, ma la ragazza muore, avvelenata accidentalmente dagli avversari politici del padre, vanificando ogni sforzo compiuto da Esteban per avere una famiglia. L''uomo si trasferisce nella sua tenuta di campagna, "Le Tre Marie", che dopo anni di decadenza e di incuria riporta allo splendore, con sacrificio personale e modi dispotici e spietati, imponendosi come uno dei proprietari agricoli più eminenti della zona. Lì, però, risente della solitudine e cerca di ovviare a questa compiendo violenze contro le figlie dei contadini delle sue campagne.')
+INSERT INTO title (title_no,title,author,synopsis) VALUES (4,'Paula','Allende Isabel',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (5,'Teresa Batista stanca di guerra','Amado Jorge',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (6,'La magia di Ultima','Anaya Rudolfo',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (7,'Il mare dell''oro','Arciniegas German',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (8,'Tutte le stirpi','Arguedas Josè Maria',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (9,'My name is Rigoberta Menchu','Burgos Elisabeth',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (10,'Il secondo anello del potere','Castaneda Carlos',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (11,'L''isola del Tonal','Castaneda Carlos',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (12,'Una realtà separata','Castaneda Carlos',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (13,'Viaggio a Ixtlan','Castaneda Carlos',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (14,'La notte del diavolo','Cayla (Du) Fuzier Sara',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (15,'Don Chisciotte vol. 1° - 2°','Cervantes (Di) Saavedra',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (16,'Don Chisciotte della Mancia vol. 1° - 2° - 3°','Cervantes Michele',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (17,'L''alchimista','Coelho Paulo','Il romanzo L''alchimista racconta la vicenda del giovane pastore Santiago, sfruttando due temi sempreverdi della letteraturamondiale: il viaggio e il sogno. La fabula si snoda in un arco temporale di due anni : scopo apparente del viaggio è - per il giovane Santiago - l''inseguimento di un sogno ricorrente, secondo il quale, ai piedi delle Piramidi, vi sarebbe un ricchissimo tesoro nascosto. In realtà, l''avventura che lo porterà dall''Andalusia - sua terra natale - fino sotto le Grandi Piramidi d''Egitto, finirà per rappresentare un insieme di durissimi banchi di prova, rappresentazione allegorica della crescita.')
+INSERT INTO title (title_no,title,author,synopsis) VALUES (18,'Sulla sponda del fiume Piedra mi sono seduta e ...','Coelho Paulo',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (19,'I balenieri di Quintay','Coloane Francisco',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (20,'Terra del fuoco','Coloane Francisco',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (21,'Le avventure del capitano','Contreras A.',NULL)
+INSERT INTO title (title_no,title,author,synopsis) VALUES (22,'Le età di Lulù','Grandes Almudena','The fifteen-year-old Lulú is seduced by Pablo, her brother Marcelo''s best friend, who then leaves to work in the United States. Lulú is sustained for years by the belief that Pablo will come back into her life. When he returns he proposes to her and they are married. Pablo and Lulú have a passionate relationship, developing a taste for sexual games. On one nocturnal expedition they join up with a transgender prostitute called Ely who becomes their friend.')
+
+SET IDENTITY_INSERT title OFF
+
+DBCC CHECKIDENT (title)
+

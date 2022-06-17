@@ -1,0 +1,41 @@
+-- Quando viene inserito un prestito, il corrispondente libro (copy)
+-- deve essere marcato come 'in prestito'
+CREATE TRIGGER SetOnLoanWhenLoanInserted
+   ON loan AFTER INSERT
+AS 
+BEGIN
+	UPDATE copy SET on_loan=1
+		FROM copy c
+		INNER JOIN inserted i ON c.isbn=i.isbn AND c.copy_no=i.copy_no
+END
+GO
+
+-- Quando viene eliminato un prestito, il corrispondente libro (copy)
+-- deve essere marcato come 'non in prestito'
+-- L'applicazione dovrà contestualmente inserire un record in loanhist
+CREATE TRIGGER SetOnLoanWhenLoanDeleted
+   ON loan AFTER DELETE
+AS 
+BEGIN
+	UPDATE copy SET on_loan=0
+		FROM copy c
+		INNER JOIN deleted d ON c.isbn=d.isbn AND c.copy_no=d.copy_no
+END
+GO
+
+-- Quando viene inserito un prestito, se esiste una prenotazione
+-- per quel libro da parte di quel member, la prenotazione va eliminata
+CREATE TRIGGER DeleteReservationWhenLoanInserted
+	ON loan AFTER INSERT
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM reservation r 
+		INNER JOIN inserted i 
+		ON r.member_no = i.member_no AND r.isbn = i.isbn )
+		BEGIN
+			DELETE r FROM reservation r
+				INNER JOIN inserted i
+				ON r.member_no = i.member_no AND r.isbn = i.isbn
+		END
+END
+GO

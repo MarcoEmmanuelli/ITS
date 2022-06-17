@@ -1,0 +1,28 @@
+/****** Object:  Table [dbo].[reservation]    Script Date: 11/10/2016 15:48:23 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[reservation](
+	[isbn] [char](13) NOT NULL,
+	[member_no] [int] NOT NULL,
+	[log_date] [datetime] NOT NULL,
+	[remarks] [nvarchar](200) NULL,
+ CONSTRAINT [PK_reservation] PRIMARY KEY CLUSTERED 
+(
+	[isbn] ASC,
+	[member_no] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+

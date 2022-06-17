@@ -1,0 +1,20 @@
+/****** Object:  Table [dbo].[juvenile]    Script Date: 10/21/2016 19:56:25 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[juvenile](
+	[member_no] [int] NOT NULL,
+	[adult_member_no] [int] NOT NULL,
+	[birth_date] [date] NOT NULL,
+ CONSTRAINT [PK_juvenile] PRIMARY KEY CLUSTERED 
+(
+	[member_no] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+

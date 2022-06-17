@@ -1,0 +1,45 @@
+-- Esempi di query e script che usano transazioni e impongono dei lock
+-- Per provare questi esempi, aprire due query windows di SQL Server Management Studio
+-- in modo da simulare due utenti simultaneamente collegati al medesimo database
+
+---------------------
+-- SCRIPT UTENTE n.1
+---------------------
+
+SELECT * FROM member
+
+BEGIN TRANSACTION
+UPDATE member SET middleinitial='Z'   -- questa UPDATE impone un lock esclusivo sulla tabella member
+WAITFOR DELAY '00:00:30'    -- durante questa attesa di 30sec, l'utente n.2 prova a fare delle operazioni
+ROLLBACK TRANSACTION        -- dopo 30sec, le righe modificate vengono ripristinate poiché la transazione subisce ROLLBACK
+
+SELECT * FROM member
+
+----
+
+BEGIN TRANSACTION
+SELECT * FROM member WITH (XLOCK)  -- con questo table hint, invece di uno shared lock viene imposto un exclusive lock
+WAITFOR DELAY '00:00:30'
+ROLLBACK TRANSACTION
+
+SELECT 'Finito'
+
+
+--------------------------------------------------------------
+-- SCRIPT UTENTE n.2 (simula altra connessione contemporanea)
+--------------------------------------------------------------
+
+EXEC sp_lock    -- questa stored procedure mostra i lock attualmente attivi, il loro tipo, il loro livello e su quali oggetti agiscono
+
+SELECT * FROM member   -- questa select deve attendere che venga rilasciato l'exclusive lock
+                       -- questa select non può leggere dati transienti (a meno che il transaction isolation level non sia "read uncommitted")
+
+SELECT * FROM member WITH (NOLOCK)  -- questa select non rispetta i lock, e legge i dati a prescindere dal fatto che siano sottoposti a lock
+                                    -- ciò significa che reperisce, in generale, dati non committed, ovvero non ufficiali, ovvero "transienti"
+
+-- Qui proviamo a modificate temporaneamente il transaction isolation level a "read uncommitted"
+-- Questo implica che la SELECT leggerà dati uncommitted
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+SELECT * FROM member
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+

@@ -1,0 +1,37 @@
+-- ESEMPIO SUGLI INSTEAD-OF trigger
+
+-- Creiamo una tabella per backuppare i member quando vengono cancellati
+-- E' uguale alla tabella member tranne che per il fatto che member_no non è IDENTITY
+-- Cambiano inoltre nome tabella e nome constraint di PK
+CREATE TABLE [dbo].[member_backup](
+	[member_no] [int] NOT NULL,   -- senza identity
+	[lastname] [nvarchar](30) NOT NULL,
+	[firstname] [nvarchar](30) NOT NULL,
+	[middleinitial] [nchar](1) NULL,
+	[photograph] [varbinary](max) NULL,
+ CONSTRAINT [PK_member_backup] PRIMARY KEY CLUSTERED 
+(
+	[member_no] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+---
+
+CREATE TRIGGER MemberTrigger
+ON member
+INSTEAD OF DELETE
+AS
+-- Backuppa i dati in tabella di appoggio prima di eliminarli effettivamente
+INSERT member_backup (member_no, lastname, firstname, middleinitial, photograph)
+SELECT member_no, lastname, firstname, middleinitial, photograph FROM deleted
+
+DELETE member WHERE member_no IN (SELECT member_no FROM deleted)   -- questa DELETE ovviamente non ri-lancia il trigger
+
+---
+
+SELECT * FROM member
+SELECT * FROM member_backup
+
+DELETE member where member_no = 10163  -- il member viene cancellato da member, ma prima copiato in member_backup
+
+

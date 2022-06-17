@@ -1,0 +1,32 @@
+
+/****** Object:  Table [dbo].[loan]    Script Date: 11/10/2016 15:47:23 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[loan](
+	[isbn] [char](13) NOT NULL,
+	[copy_no] [int] NOT NULL,
+	[title_no] [int] NOT NULL,
+	[member_no] [int] NOT NULL,
+	[out_date] [datetime] NULL,
+	[due_date] [datetime] NULL,
+ CONSTRAINT [PK_loan] PRIMARY KEY CLUSTERED 
+(
+	[isbn] ASC,
+	[copy_no] ASC,
+	[member_no] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+

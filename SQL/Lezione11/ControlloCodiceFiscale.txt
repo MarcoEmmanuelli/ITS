@@ -1,0 +1,94 @@
+-- Esempio di algoritmo per il calcolo
+-- del carattere di controllo del codice fiscale
+
+-- Tabella CodiciCaratteri
+CREATE TABLE [dbo].[CodiciCaratteri](
+	[Indice] [int] NOT NULL,
+	[CodPosPari] [int] NOT NULL,
+	[CodPosDispari] [int] NOT NULL,
+ CONSTRAINT [PK_CodiciCaratteri] PRIMARY KEY CLUSTERED 
+(
+	[Indice] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+-- Popolamento tabella CodiciCaratteri
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (0,0,1)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (1,1,0)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (2,2,5)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (3,3,7)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (4,4,9)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (5,5,13)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (6,6,15)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (7,7,17)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (8,8,19)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (9,9,21)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (10,0,1)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (11,1,0)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (12,2,5)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (13,3,7)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (14,4,9)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (15,5,13)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (16,6,15)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (17,7,17)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (18,8,19)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (19,9,21)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (20,10,2)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (21,11,4)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (22,12,18)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (23,13,20)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (24,14,11)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (25,15,3)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (26,16,6)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (27,17,8)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (28,18,12)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (29,19,14)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (30,20,16)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (31,21,10)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (32,22,22)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (33,23,25)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (34,24,24)
+INSERT CodiciCaratteri (Indice, CodPosPari, CodPosDispari) VALUES (35,25,23)
+
+
+-- Script algoritmo
+
+DECLARE @cf varchar(16)
+SET @cf='VNDLRT70A24L219F'
+
+DECLARE @chars varchar(36) =
+'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+DECLARE @i integer=1
+DECLARE @c char
+DECLARE @pos integer
+DECLARE @cod integer
+DECLARE @accu integer=0
+
+WHILE (@i<=15)
+  BEGIN
+  SET @c = SUBSTRING(@cf,@i,1)
+  PRINT @c
+  SET @pos=PATINDEX('%'+@c+'%',@chars)-1
+  PRINT @pos
+  IF @i % 2 =0
+    BEGIN
+    SELECT @cod=CodPosPari FROM CodiciCaratteri
+      WHERE Indice=@pos
+    END
+  ELSE
+    BEGIN
+    SELECT @cod=CodPosDispari FROM CodiciCaratteri
+      WHERE Indice=@pos    
+    END
+  SET @accu=@accu+@cod
+
+  SET @i=@i+1
+  END
+PRINT @accu
+DECLARE @resto int
+SET @resto=@accu % 26
+SELECT SUBSTRING(@chars,@resto+11,1)

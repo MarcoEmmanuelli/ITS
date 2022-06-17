@@ -1,0 +1,69 @@
+-- EXAMPLE TO REPRODUCE THE DEADLOCK CONDITION
+-- Two tables with sample data are created.
+CREATE TABLE Employees (
+    EmpId INT IDENTITY,
+    EmpName VARCHAR(16),
+    Phone VARCHAR(16)
+)
+GO
+
+INSERT INTO Employees (EmpName, Phone)
+VALUES ('Martha', '800-555-1212'), ('Jimmy', '619-555-8080')
+GO
+
+CREATE TABLE Suppliers(
+    SupplierId INT IDENTITY,
+    SupplierName VARCHAR(64),
+    Fax VARCHAR(16)
+)
+GO
+
+INSERT INTO Suppliers (SupplierName, Fax)
+VALUES ('Acme', '877-555-6060'), ('Rockwell', '800-257-1234')
+GO
+
+
+/*
+Now open two empty query windows in SSMS. 
+Place the code for session 1 in one query window and the code for session 2 in the other query window. 
+Then execute each of the two sessions step by step, 
+going back and forth between the two query windows as required. 
+Note that each transaction has a lock on a resource that the other transaction is also requesting a lock on.
+*/
+-- Session 1                  -- Session 2
+===========================================================
+BEGIN TRANSACTION
+UPDATE Employees
+SET EmpName = 'Mary'
+WHERE EmpId = 1
+===========================================================
+                              BEGIN TRANSACTION
+                              UPDATE Suppliers
+                              SET Fax = N'555-1212'
+                              WHERE SupplierId = 1
+===========================================================
+UPDATE Suppliers
+SET Fax = N'555-1212'
+WHERE SupplierId = 1
+-- Session 1 is blocked 
+                              UPDATE Employees
+                              SET Phone = N'555-9999'
+                              WHERE EmpId = 1
+                              -- Session 2 is blocked 
+
+
+-- A deadlock results; one transaction finishes 
+-- and the other transaction is aborted and error message 1205 is sent to client.
+
+
+-- Final clean-up:
+
+
+COMMIT TRANSACTION  -- if not killed
+                              COMMIT TRANSACTION  -- if not killed
+
+
+DROP TABLE Employees
+GO
+DROP TABLE Suppliers
+GO

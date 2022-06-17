@@ -1,0 +1,28 @@
+/****** Object:  Table [dbo].[member]    Script Date: 10/21/2016 19:54:53 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[member](
+	[member_no] [int] IDENTITY(1,1) NOT NULL,
+	[lastname] [nvarchar](30) NOT NULL,
+	[firstname] [nvarchar](30) NOT NULL,
+	[middleinitial] [nchar](1) NULL,
+	[photograph] [varbinary](max) NULL,
+ CONSTRAINT [PK_member] PRIMARY KEY CLUSTERED 
+(
+	[member_no] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
