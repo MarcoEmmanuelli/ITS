@@ -1,0 +1,191 @@
+// conto corrente
+#include <iostream>
+using namespace std;
+
+//funzione controllo input numerico
+bool controlloinput(){
+	bool in=true;
+	if(cin.fail()){ // input completamente errato
+//			cout << "inserimento errato!!!\n";
+			cin.clear();
+			cin.ignore(800,'\n');
+			in=false;
+	}else{ // input parzialmente errato
+			cin.ignore(800,'\n');
+			if((cin.gcount())>1){
+//				cout << "inserimento errato!!!\n";
+				in=false;
+		}
+	}
+	return in;
+}
+
+
+//prende input numerico  (controlla anche input non negativo)
+double leggi_input(double n){
+	bool in;
+	do{
+		in=true;
+		cout <<" inserisci il valore: "<<endl;
+		cin >> n;
+		if (n<0){
+			cout << "valore non pu  essere negativo!!"<<endl;
+		}
+		if(controlloinput()==false){ // serve ad eliminare il cout di controlloinput()
+			cout << "valore errato!! inserisci un numero"<<endl;			
+			in=false;	
+		}
+
+	}while((in==false) || n<0);
+	return n;
+}
+
+        //funzione versamento
+bool versamento(double op,double &sal){ 
+	    sal= sal+op; 
+	    return true;
+}
+
+bool chiedi_conferma(double val){
+	char c;
+	cout << "\n\nIl prelievo che stai effettuando \212 superiore al saldo;\nLo sconfinamento del saldo richiede interessi del 20%\n"
+		"Sei sicuro di voler svolgere l'operazione? s=Si"<<endl;
+	cin >> c;
+	if(c=='s' || c=='S'){
+		return true;
+	}else{
+		return false;
+	}
+}
+	//metodo prelievo
+bool prelievo(double val,double &sal){  
+	bool risp=false,op=false;
+	if (sal-val>0){
+	    sal=sal-val; 
+	    op=true;
+	}
+	else{
+		risp=chiedi_conferma(sal-val);
+		if(risp==true){
+			sal=sal-val; 
+	    	op=true;
+		}else{
+			
+		}
+
+	}    
+	return op;
+}
+
+void stampa_ultmov(double ult_mov){
+	if(ult_mov!=0){
+      	if(ult_mov>0)
+	      		cout << "Versamento valore = "<<ult_mov<<endl;
+      	else
+	      		cout << "Prelievo valore = "<<-ult_mov<<endl;
+  	}else{
+	  		cout << "\n Non hai ancora effettuato movimenti!!"<<endl;
+	}
+}
+
+//funzione stampa saldo
+void stampa_saldo(double saldo){
+	cout << "\n\n SALDO DISPONIBILE: "<<saldo<<endl<<endl;
+}
+
+// FUNZIONE DI CREAZIONE DEL MENU' UTENTE
+int Menu(void)
+{
+	int scelta;
+	do{
+		system("CLS");
+		cout << "\n\n";
+		cout << "\t********************************************\n";
+		cout << "\t*         CONTO CORRENTE                   *\n";
+		cout << "\t********************************************\n";
+		cout << "\t********************************************\n";
+		cout << "\t*       Menu' utente principale            *\n";
+		cout << "\t********************************************\n";
+		cout << "\t* 1 SALDO                                  *\n";
+		cout << "\t* 2 PRELIEVO                               *\n";
+		cout << "\t* 3 VERSAMENTO                             *\n";
+		cout << "\t* 4 STAMPA ULTIMO MOVIMENTO                *\n";
+		cout << "\t* 5 =======> USCITA                        *\n";
+		cout << "\t********************************************\n\n\n";
+		cout << "\tInserire scelta (1, 2, 3, 4  oppure 5)   :    ";
+		cin >> scelta;
+  		if (controlloinput()==false || (scelta < 1)|| (scelta > 5)){
+			  scelta=0;
+		      printf ("\n\nERRORE!! Digitare la scelta corretta.....\n\n");
+		      system("PAUSE");
+		}
+	}while ( (scelta < 1)|| (scelta > 5));
+	return scelta;
+}
+
+
+
+int main(){
+	setlocale(LC_ALL, "Italian");
+	string proprietario;			// nome del propritario del conto
+	double saldo=0; 						// saldo del contocorrente
+	int scelta;
+	double val;
+	double ult_mov=0;
+	do{
+		    // ripulisco lo schermo
+	    system("CLS");
+		   // chiamo la funzione che crea il men  utente
+	    scelta = Menu();
+		fflush(stdin);
+	    switch (scelta){
+	      case 1: 
+	    		system("CLS");
+	    		stampa_saldo(saldo);
+			  	break;
+	      case 2: {
+	    		system("CLS");
+				cout <<"\nOPERAZIONE DI PRELIEVO"<<endl;	//<<"inserisci valore da prelevare  "<<"saldo disponibile: "<<saldo<<endl;
+		      	cout <<"\n"<<"inserisci valore da prelevare  "<<"saldo disponibile: "<<saldo<<endl;
+				val=leggi_input(val);
+		      	bool r=prelievo(val,saldo);
+		      	if (r==true){
+					cout << "\nPrelievo effettuato!! Nuovo saldo aggiornato: "<<saldo<<endl<<endl;
+					ult_mov=-val;
+				}else{
+					cout << "\nPrelievo annullato dall'utente!!  Saldo invariato "<<saldo<<endl<<endl;
+				}
+			  	break;
+			}
+	      case 3: {
+	    		system("CLS");	      	
+				bool r;int c;
+		      	cout <<"\nOPERAZIONE DI VERSAMENTO"<<endl;
+		      	cout <<"\n"<<"inserisci valore da versare  "<<"saldo disponibile: "<<saldo<<endl;
+				val=leggi_input(val);
+		      	r=versamento(val,saldo);
+		      	if (r==true){
+					cout << "\nversamento effettuato!! Nuovo saldo aggiornato: "<<saldo<<endl<<endl;
+					ult_mov=val;
+				}
+			  	break;
+		  }
+	      case 4: 
+	    		system("CLS");	      
+		      	cout <<"\nSTAMPA ULTIMO MOVIMENTO"<<endl<<endl;
+		      	stampa_ultmov(ult_mov);
+			  	break;
+
+			  	
+	      case 5:
+	      		system("CLS");
+		       	cout <<"\n\nGrazie per aver utilizzato il programma... \n\n";
+
+		}
+		system("PAUSE");
+	  }while (scelta != 5);
+  //	system("PAUSE");	  
+
+
+
+}
