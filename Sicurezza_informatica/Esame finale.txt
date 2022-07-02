@@ -1,0 +1,20 @@
+Esame finale
+L'esame è composto da 4 sezioni, che verranno completate a tempo ed in sequenza.
+
+La prima sezione riguarda l'argomento "cybersecurity" (slide 1 e 2); 15MIN
+la seconda sezione riguarda  l'argomento "crittografia" (slide 3-6); 15MIN
+la terza sezione riguarda l'argomento "sicurezza del backend" (slide 7-9). 45MIN
+
+Tutte le sezioni sono composte da 10 domande a riposta chiusa, con 4 risposte possibili di cui 1 corretta(a meno che non sia specificato diversamente nel testo della domanda).
+Non sono previste penalizzazioni nel caso di risposte errate o lasciate in bianco.
+ 
+-La sufficienza nella sezione è raggiunta con un voto pari a 18/30 in ogni sezione.
+
+-La terza sezione riguarda gli argomenti di tutto il corso ed è composto da 3 domande aperte di carattere generale. La sufficienza è raggiunta con 18/30. Il tempo previsto per la terza sezione è di 45 minuti.
+
+-Le sezioni sono sequenziali: al termine della prima parte si accederà alla seconda, al termine della seconda si accederà alla terza, ecc, secondo i tempi scanditi dal sistema stesso.
+
+-L'esame è considerato superato se tutte e quattro le parti sono sufficienti. Gli studenti eventualmente insufficienti in una o più parti dovranno recuperare solo le parti in cui non hanno raggiunto la sufficienza.
+ Ad esempio, se Bob è insufficiente nella sezione 1 e 3, ma è sufficiente nella sezione 2, nell'esame di recupero farà soltanto le sezioni 1 e 3.
+
+Il voto finale è calcolato come media ponderata delle quattro sezioni: la prima e la seconda sezione hanno un peso di 0.20, la terza ha un peso di 0.4.
